@@ -44,3 +44,12 @@ chrono = { version = "0.4", features = ["serde"] }
 
 # Home directory resolution
 dirs = "5"
+
+# HTTP client for LLM APIs
+reqwest = { version = "0.12", features = ["json", "stream"] }
+
+# Stream processing
+futures = "0.3"
+
+# Dialog plugin for file picker
+tauri-plugin-dialog = "2"

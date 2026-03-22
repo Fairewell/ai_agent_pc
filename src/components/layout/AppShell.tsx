@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { Search, LayoutDashboard, Settings, Database } from "lucide-react";
+import { Search, MessageSquare, LayoutDashboard, Settings, Database } from "lucide-react";
 import clsx from "clsx";
 import { useIndexStore } from "../../stores/indexStore";
 
 const navItems = [
   { to: "/", label: "Search", icon: Search },
+  { to: "/chat", label: "Chat", icon: MessageSquare },
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/settings", label: "Settings", icon: Settings },
 ];
