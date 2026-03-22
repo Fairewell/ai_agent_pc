@@ -1,0 +1,46 @@
+[package]
+name = "ai-agent-pc"
+version = "0.1.0"
+description = "Desktop document indexing and search application"
+authors = ["you"]
+edition = "2021"
+
+[lib]
+name = "ai_agent_pc_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Full-text search
+tantivy = "0.22"
+
+# Database
+rusqlite = { version = "0.31", features = ["bundled"] }
+
+# Filesystem
+walkdir = "2"
+notify = "7"
+
+# Async
+tokio = { version = "1", features = ["full"] }
+
+# Error handling & logging
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Hashing for change detection
+blake3 = "1"
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Home directory resolution
+dirs = "5"
