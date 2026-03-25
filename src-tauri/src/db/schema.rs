@@ -54,6 +54,43 @@ pub fn init_database(path: &Path) -> Result<Connection> {
             key   TEXT PRIMARY KEY,
             value TEXT NOT NULL DEFAULT ''
         );
+
+        -- AI provider configurations
+        CREATE TABLE IF NOT EXISTS providers (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            name        TEXT    NOT NULL,
+            base_url    TEXT    NOT NULL,
+            api_key     TEXT    NOT NULL DEFAULT '',
+            model_name  TEXT    NOT NULL,
+            max_tokens  INTEGER NOT NULL DEFAULT 4096,
+            temperature REAL    NOT NULL DEFAULT 0.7,
+            is_default  INTEGER NOT NULL DEFAULT 0,
+            created_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+            updated_at  TEXT    NOT NULL DEFAULT (datetime('now'))
+        );
+
+        -- Chat sessions
+        CREATE TABLE IF NOT EXISTS chat_sessions (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            title       TEXT    NOT NULL DEFAULT 'New Chat',
+            provider_id INTEGER,
+            created_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+            updated_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+            FOREIGN KEY (provider_id) REFERENCES providers(id) ON DELETE SET NULL
+        );
+
+        -- Chat messages
+        CREATE TABLE IF NOT EXISTS chat_messages (
+            id             INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id     INTEGER NOT NULL,
+            role           TEXT    NOT NULL CHECK(role IN ('user', 'assistant', 'system', 'tool')),
+            content        TEXT    NOT NULL DEFAULT '',
+            attached_files TEXT    NOT NULL DEFAULT '[]',
+            tool_calls     TEXT    NOT NULL DEFAULT '[]',
+            created_at     TEXT    NOT NULL DEFAULT (datetime('now')),
+            FOREIGN KEY (session_id) REFERENCES chat_sessions(id) ON DELETE CASCADE
+        );
+        CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id);
         ",
     )?;
 
